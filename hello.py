@@ -8,7 +8,7 @@ page = requests.get(URL)
 
 soup = BeautifulSoup(page.content, "html.parser")
 
-titles = soup.find_all("h2", {"class": "titulo"})
+titles = soup.select("h2.titulo")
 
 for row in titles:
     print(row.get_text().strip())
