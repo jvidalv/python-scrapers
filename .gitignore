@@ -3,3 +3,6 @@
 
 # Environments
 venv/
+
+# Keys
+src/keys/*
