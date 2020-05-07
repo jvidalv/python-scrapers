@@ -11,3 +11,6 @@ venv/
 
 # Keys
 src/keys/*
+
+# Logs
+*.log

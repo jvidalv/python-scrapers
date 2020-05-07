@@ -2,3 +2,7 @@
 beautifulsoup4==4.9.0
 request==2019.4.13
 pymongo==3.10.1
+selenium=3.141.0
+wheel=0.34.2
+lxml=3.4.2
+webdriver-manager=2.4.0
