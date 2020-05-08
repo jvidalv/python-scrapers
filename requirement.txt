@@ -6,3 +6,4 @@ selenium=3.141.0
 wheel=0.34.2
 lxml=3.4.2
 webdriver-manager=2.4.0
+fake-useragent=0.1.11

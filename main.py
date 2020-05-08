@@ -1,4 +1,5 @@
 import requests
+import random
 from pprint import pprint
 from bs4 import BeautifulSoup
 from src.utils.Mongo import Mongo
@@ -6,7 +7,6 @@ from src.keys.db_mongo import mongo_connection
 from datetime import datetime
 from src.constants.signs import *
 from src.utils.headless import *
-import time
 
 # CONNECTION
 mongo = Mongo(mongo_connection)
@@ -36,10 +36,38 @@ for sign in signs_en:
         }
     })
 
+# LUCKY NUMBERS - YOU LOVE - YOU HATE
+for data in daily_data:
+    # NUMBERS
+    for x in range(3):
+        random_number = random.randrange(1, 100)
+        while random_number in data['contents']['numbers']:
+            random_number = random.randrange(1, 100)
+
+        data['contents']['numbers'].append(
+            random_number
+        )
+    # LOVE
+    while len(data['contents']['you_love']) < 2:
+        random_sign = signs_en[random.randrange(1, 12)]
+        if random_sign not in data['contents']['you_love']:
+            data['contents']['you_love'].append(random_sign)
+    # HATE
+    while len(data['contents']['you_hate']) < 2:
+        random_sign = signs_en[random.randrange(1, 12)]
+        if random_sign not in data['contents']['you_hate'] and random_sign not in data['contents']['you_love']:
+            data['contents']['you_hate'].append(random_sign)
+
+# YOU LOVE
+pprint(daily_data)
+
+# YOU HATE
+exit()
+
 # SPANISH
 # Get the latest blog entry for this blog ( 1 each day )
 spanish_base_url = 'https://www.semana.es/horoscopo/'
-page = requests.get(spanish_base_url)
+page = requests.get(spanish_base_url, headers={'User-Agent': random_user_agent()})
 spanish_soup = BeautifulSoup(page.content, parser)
 days = spanish_soup.select("div.td_module_10:first-child a:first-child")
 day_url = days[0].get('href')
@@ -62,7 +90,7 @@ for data in daily_data:
 # ENGLISH
 base = "https://www.prokerala.com"
 english_base_url = "https://www.prokerala.com/astrology/horoscope/"
-page = requests.get(english_base_url)
+page = requests.get(english_base_url, headers={'User-Agent': random_user_agent()})
 english_soup = BeautifulSoup(page.content, parser)
 page_signs = english_soup.select('h2.sample-prediction-sign > a')
 for data in daily_data:
