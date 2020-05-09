@@ -1,14 +1,19 @@
 FROM python:3.8.2
 
-COPY requirements.txt /tmp/
+# Chrome dependencies
+RUN apt-get update
+RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 
-RUN pip install -r /tmp/requirements.txt
-
-RUN apt-get update; apt-get install libgconf2-4 libnss3-1d libxss1
+# Download and install chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -f install
-RUN dpkg -i google-chrome-stable_current_amd64.deb;
+RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 
-COPY . /
+# Install python dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r ./requirements.txt
 
+# Copy local files
+COPY . .
+
+# Script
 CMD [ "python", "./main.py" ]
