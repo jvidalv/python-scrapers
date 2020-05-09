@@ -58,12 +58,6 @@ for data in daily_data:
         if random_sign not in data['contents']['you_hate'] and random_sign not in data['contents']['you_love']:
             data['contents']['you_hate'].append(random_sign)
 
-# YOU LOVE
-pprint(daily_data)
-
-# YOU HATE
-exit()
-
 # SPANISH
 # Get the latest blog entry for this blog ( 1 each day )
 spanish_base_url = 'https://www.semana.es/horoscopo/'
@@ -106,6 +100,6 @@ for data in daily_data:
                 'Check love percentage using love calculator.', '').strip()
             data['contents']['work']['en'] = panels[3].text.replace('\n', '').strip()
 
-pprint(daily_data)
+mongo.db.horoscope_daily.insert_many(daily_data)
 
-# @todo
+exit(1)
