@@ -8,5 +8,12 @@ pipeline {
         }
       }
     }
+    stage('test') {
+      steps {
+        withEnv(["HOME=${env.WORKSPACE}"]) {
+            sh 'python test.py'
+        }
+      }
+    }
   }
 }
