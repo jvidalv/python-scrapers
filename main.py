@@ -106,6 +106,7 @@ for data in daily_data:
             headless = chrome()
             headless.get(url)
             english_soup = BeautifulSoup(headless.page_source, parser)
+            headless.quit()
             panels = english_soup.select('div.horoscope-panel')
             data['contents']['health']['en'] = panels[1].text.replace('\n', '').strip()
             data['contents']['love']['en'] = panels[2].text.replace('\n', '').replace(
