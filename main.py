@@ -17,6 +17,7 @@ parser = "lxml"
 
 # DAY ---
 day = datetime.today().strftime('%Y-%m-%d')
+pprint('Day -- ' + day + "\n")
 
 # SIGNS BASE ---
 for sign in signs_en:
@@ -35,6 +36,8 @@ for sign in signs_en:
             'numbers': []
         }
     })
+
+pprint("Signs done \n")
 
 # LUCKY NUMBERS - YOU LOVE - YOU HATE
 for data in daily_data:
@@ -58,8 +61,12 @@ for data in daily_data:
         if random_sign not in data['contents']['you_hate'] and random_sign not in data['contents']['you_love']:
             data['contents']['you_hate'].append(random_sign)
 
+pprint("Numbers, hate and love done \n")
+
 # SPANISH
 # Get the latest blog entry for this blog ( 1 each day )
+pprint("Spanish data in progress... \n")
+
 spanish_base_url = 'https://www.semana.es/horoscopo/'
 page = requests.get(spanish_base_url, headers={'User-Agent': random_user_agent()})
 spanish_soup = BeautifulSoup(page.content, parser)
@@ -81,7 +88,11 @@ for data in daily_data:
             data['contents']['work']['es'] = p_data[4].text.lstrip('Dinero y trabajo:').split('Ver más sobre')[
                 0].strip()
 
+pprint("Spanish data done \n")
+
 # ENGLISH
+pprint("English data in progress... \n")
+
 base = "https://www.prokerala.com"
 english_base_url = "https://www.prokerala.com/astrology/horoscope/"
 page = requests.get(english_base_url, headers={'User-Agent': random_user_agent()})
@@ -100,6 +111,11 @@ for data in daily_data:
                 'Check love percentage using love calculator.', '').strip()
             data['contents']['work']['en'] = panels[3].text.replace('\n', '').strip()
 
+pprint("English data done \n")
+
+pprint("Updating mongo... \n")
+
 mongo.db.horoscope_daily.insert_many(daily_data)
 
+pprint("Everything done, see you tomorrow! \n")
 exit(1)
