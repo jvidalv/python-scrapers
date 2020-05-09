@@ -3,8 +3,6 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from fake_useragent import UserAgent
-import chromedriver_binary
-
 
 def firefox():
     options = webdriver.FirefoxOptions()
@@ -20,7 +18,7 @@ def chrome():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("window-size=1400,2100")
     chrome_options.add_argument('--disable-gpu')
-    return webdriver.Chrome(chrome_options=chrome_options,)
+    return webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options,)
 
 
 def random_user_agent():
