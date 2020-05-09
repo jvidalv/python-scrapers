@@ -101,8 +101,10 @@ page_signs = english_soup.select('h2.sample-prediction-sign > a')
 for data in daily_data:
     for page_sign in page_signs:
         if page_sign.text == data['sign']:
+            url = base + page_sign.get('href')
+            pprint(url)
             headless = chrome()
-            headless.get(base + page_sign.get('href'))
+            headless.get(url)
             english_soup = BeautifulSoup(headless.page_source, parser)
             panels = english_soup.select('div.horoscope-panel')
             data['contents']['health']['en'] = panels[1].text.replace('\n', '').strip()
