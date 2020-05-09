@@ -17,7 +17,7 @@ parser = "lxml"
 
 # DAY ---
 day = datetime.today().strftime('%Y-%m-%d')
-pprint('Day -- ' + day + "\n")
+print('Day -- ' + day)
 
 # SIGNS BASE ---
 for sign in signs_en:
@@ -37,7 +37,7 @@ for sign in signs_en:
         }
     })
 
-pprint("Signs done \n")
+print("Signs done")
 
 # LUCKY NUMBERS - YOU LOVE - YOU HATE
 for data in daily_data:
@@ -61,11 +61,11 @@ for data in daily_data:
         if random_sign not in data['contents']['you_hate'] and random_sign not in data['contents']['you_love']:
             data['contents']['you_hate'].append(random_sign)
 
-pprint("Numbers, hate and love done \n")
+print("Numbers, hate and love done")
 
 # SPANISH
 # Get the latest blog entry for this blog ( 1 each day )
-pprint("Spanish data in progress... \n")
+print("Spanish data in progress...")
 
 spanish_base_url = 'https://www.semana.es/horoscopo/'
 page = requests.get(spanish_base_url, headers={'User-Agent': random_user_agent()})
@@ -88,10 +88,10 @@ for data in daily_data:
             data['contents']['work']['es'] = p_data[4].text.lstrip('Dinero y trabajo:').split('Ver más sobre')[
                 0].strip()
 
-pprint("Spanish data done \n")
+print("Spanish data done")
 
 # ENGLISH
-pprint("English data in progress... \n")
+print("English data in progress...")
 
 base = "https://www.prokerala.com"
 english_base_url = "https://www.prokerala.com/astrology/horoscope/"
@@ -101,7 +101,7 @@ page_signs = english_soup.select('h2.sample-prediction-sign > a')
 for data in daily_data:
     for page_sign in page_signs:
         if page_sign.text == data['sign']:
-            headless = firefox()
+            headless = chrome()
             headless.get(base + page_sign.get('href'))
             english_soup = BeautifulSoup(headless.page_source, parser)
             panels = english_soup.select('div.horoscope-panel')
@@ -111,11 +111,11 @@ for data in daily_data:
                 'Check love percentage using love calculator.', '').strip()
             data['contents']['work']['en'] = panels[3].text.replace('\n', '').strip()
 
-pprint("English data done \n")
+print("English data done")
 
-pprint("Updating mongo... \n")
+print("Updating mongo...")
 
 mongo.db.horoscope_daily.insert_many(daily_data)
 
-pprint("Everything done, see you tomorrow! \n")
+print("Everything done, see you tomorrow!")
 exit(1)

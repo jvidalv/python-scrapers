@@ -17,8 +17,9 @@ def chrome():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument('log-level=2')
+    chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument(f'user-agent={random_user_agent()}')
-    return webdriver.Chrome(ChromeDriverManager(), options=chrome_options)
+    return webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
 
 def random_user_agent():

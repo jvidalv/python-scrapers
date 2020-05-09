@@ -1,5 +1,4 @@
-from pprint import pprint
 
-pprint("It works")
+print("It works :)")
 
 exit(1)
