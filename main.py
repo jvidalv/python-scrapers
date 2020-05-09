@@ -110,6 +110,7 @@ for data in daily_data:
                 'Understand compatibility with  love horoscope', '').replace(
                 'Check love percentage using love calculator.', '').strip()
             data['contents']['work']['en'] = panels[3].text.replace('\n', '').strip()
+            pprint(data)
 
 print("English data done")
 
