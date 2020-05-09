@@ -102,7 +102,6 @@ for data in daily_data:
     for page_sign in page_signs:
         if page_sign.text == data['sign']:
             url = base + page_sign.get('href')
-            pprint(url)
             headless = chrome()
             headless.get(url)
             english_soup = BeautifulSoup(headless.page_source, parser)
