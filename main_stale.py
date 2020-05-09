@@ -4,7 +4,6 @@ from pprint import pprint
 from bs4 import BeautifulSoup
 from src.utils.Mongo import Mongo
 from src.keys.db_mongo import mongo_connection
-from datetime import datetime
 from src.constants.signs import *
 from src.utils.headless import *
 from src.utils.unicode import delete_accents
@@ -92,4 +91,4 @@ for data in stale_data:
 
 mongo.db.horoscope_stale.insert_many(stale_data)
 
-exit(1)
+exit(0)

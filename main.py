@@ -118,4 +118,5 @@ print("Updating mongo...")
 mongo.db.horoscope_daily.insert_many(daily_data)
 
 print("Everything done, see you tomorrow!")
-exit(1)
+
+exit(0)

@@ -1,4 +1,4 @@
 
 print("It works :)")
 
-exit(1)
+exit(0)
