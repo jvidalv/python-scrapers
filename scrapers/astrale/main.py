@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from src.utils.Mongo import Mongo
 from src.keys.db_mongo import mongo_connection
 from datetime import datetime
-from src.constants.signs import *
-from src.utils.headless import *
+from scrapers.astrale.src.constants.signs import *
+from scrapers.astrale.src.utils.headless import *
 
 # CONNECTION
 mongo = Mongo(mongo_connection)
