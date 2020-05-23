@@ -89,6 +89,6 @@ for data in stale_data:
         data['resume']['es'] = compatibility_ps[0].text
         data['relationship']['es'] = compatibility_ps[2].text
 
-mongo.db.horoscope_stale.insert_many(stale_data)
+mongo.db.stale.insert_many(stale_data)
 
 exit(0)

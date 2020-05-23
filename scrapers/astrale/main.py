@@ -2,8 +2,8 @@ import requests
 import random
 from pprint import pprint
 from bs4 import BeautifulSoup
-from src.utils.Mongo import Mongo
-from src.keys.db_mongo import mongo_connection
+from scrapers.astrale.src.utils.Mongo import Mongo
+from scrapers.astrale.src.keys.db_mongo import mongo_connection
 from datetime import datetime
 from scrapers.astrale.src.constants.signs import *
 from scrapers.astrale.src.utils.headless import *
@@ -117,7 +117,7 @@ print("English data done")
 
 print("Updating mongo...")
 
-mongo.db.horoscope_daily.insert_many(daily_data)
+mongo.db.daily.insert_many(daily_data)
 
 print("Everything done, see you tomorrow!")
 
