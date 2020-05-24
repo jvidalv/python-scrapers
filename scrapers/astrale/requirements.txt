@@ -5,7 +5,7 @@ pymongo==3.10.1
 selenium==3.141.0
 wheel==0.34.2
 lxml==4.5.0
-webdriver-manager==2.4.0
+webdriver-manager==2.5.2
 fake-useragent==0.1.11
 requests==2.23.0
-chromedriver-binary==81.0.4044.138
+chromedriver-binary==83.0.4103.39.0

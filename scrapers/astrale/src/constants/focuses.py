@@ -2,7 +2,7 @@ focuses = [
     'Finances',
     'Fitness',
     'Cooking',
-    'Job',
+    'Work',
     'Study',
     'Love',
     'Health',
