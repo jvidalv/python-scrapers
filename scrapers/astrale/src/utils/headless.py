@@ -1,9 +1,6 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
 from fake_useragent import UserAgent
-import chromedriver_binary
+from selenium import webdriver
+from webdriver_manager.firefox import GeckoDriverManager
 
 
 def firefox():

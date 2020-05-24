@@ -1,12 +1,13 @@
-import requests
 import random
-from pprint import pprint
-from bs4 import BeautifulSoup
-from scrapers.astrale.src.utils.Mongo import Mongo
-from scrapers.astrale.src.keys.db_mongo import mongo_connection
 from datetime import datetime
-from scrapers.astrale.src.constants.signs import *
-from scrapers.astrale.src.utils.headless import *
+
+import requests
+from bs4 import BeautifulSoup
+from src.constants.focuses import *
+from src.constants.signs import *
+from src.keys.db_mongo import mongo_connection
+from src.utils.Mongo import Mongo
+from src.utils.headless import *
 
 # CONNECTION
 mongo = Mongo(mongo_connection)
@@ -25,21 +26,21 @@ for sign in signs_en:
         'day': day,
         'sign': sign,
         'contents': {
+            'focus': '',
             'love':
                 {'es': '', 'en': ''},
             'health':
                 {'es': '', 'en': ''},
             'work':
                 {'es': '', 'en': ''},
-            'you_hate': [],
-            'you_love': [],
+            'compatibility': [],
             'numbers': []
         }
     })
 
 print("Signs done")
 
-# LUCKY NUMBERS - YOU LOVE - YOU HATE
+# LUCKY NUMBERS - COMPATIBILITY - FOCUS OF THE DAY
 for data in daily_data:
     # NUMBERS
     for x in range(3):
@@ -51,17 +52,14 @@ for data in daily_data:
             random_number
         )
     # LOVE
-    while len(data['contents']['you_love']) < 2:
-        random_sign = signs_en[random.randrange(1, 12)]
-        if random_sign not in data['contents']['you_love']:
-            data['contents']['you_love'].append(random_sign)
+    while len(data['contents']['compatibility']) < 2:
+        random_sign = signs_en[random.randrange(0, len(signs_en) - 1)]
+        if random_sign not in data['contents']['compatibility']:
+            data['contents']['compatibility'].append(random_sign)
     # HATE
-    while len(data['contents']['you_hate']) < 2:
-        random_sign = signs_en[random.randrange(1, 12)]
-        if random_sign not in data['contents']['you_hate'] and random_sign not in data['contents']['you_love']:
-            data['contents']['you_hate'].append(random_sign)
+    data['contents']['focus'] = focuses[random.randrange(0, len(focuses) - 1)]
 
-print("Numbers, hate and love done")
+print("Numbers, compatibility and foucs done")
 
 # SPANISH
 # Get the latest blog entry for this blog ( 1 each day )

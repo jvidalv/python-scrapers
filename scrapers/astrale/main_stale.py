@@ -1,12 +1,14 @@
-import requests
 import random
 from pprint import pprint
+
+import requests
 from bs4 import BeautifulSoup
-from scrapers.astrale.src.utils.Mongo import Mongo
-from scrapers.astrale.src.keys.db_mongo import mongo_connection
-from scrapers.astrale.src.constants.signs import *
-from scrapers.astrale.src.utils.headless import *
-from scrapers.astrale.src.utils.unicode import delete_accents
+
+from src.constants.signs import *
+from src.keys.db_mongo import mongo_connection
+from src.utils.Mongo import Mongo
+from src.utils.headless import *
+from ssrc.utils.unicode import delete_accents
 
 # CONNECTION
 mongo = Mongo(mongo_connection)
