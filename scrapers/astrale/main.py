@@ -8,6 +8,7 @@ from src.constants.signs import *
 from src.keys.db_mongo import mongo_connection
 from src.utils.Mongo import Mongo
 from src.utils.headless import *
+from src.utils.unicode import *
 
 # CONNECTION
 mongo = Mongo(mongo_connection)
@@ -32,11 +33,7 @@ for sign in signs_en:
                 'work': random.randrange(30, 100),
                 'health': random.randrange(30, 100)
             },
-            'love':
-                {'es': '', 'en': ''},
-            'health':
-                {'es': '', 'en': ''},
-            'work':
+            'text':
                 {'es': '', 'en': ''},
             'compatibility': [],
             'numbers': []
@@ -57,7 +54,7 @@ for data in daily_data:
             random_number
         )
     # COMPATIBILITY
-    while len(data['contents']['compatibility']) < 2:
+    while len(data['contents']['compatibility']) < 3:
         random_sign = signs_en[random.randrange(0, len(signs_en) - 1)]
         if random_sign not in data['contents']['compatibility']:
             data['contents']['compatibility'].append(random_sign)
@@ -67,54 +64,28 @@ for data in daily_data:
 print("Numbers, compatibility and focus done")
 
 # SPANISH
-# Get the latest blog entry for this blog ( 1 each day )
 print("Spanish data in progress...")
 
-spanish_base_url = 'https://www.semana.es/horoscopo/'
-page = requests.get(spanish_base_url, headers={'User-Agent': random_user_agent()})
-spanish_soup = BeautifulSoup(page.content, parser)
-days = spanish_soup.select("div.td_module_10:first-child a:first-child")
-day_url = days[0].get('href')
-spanish_day_url = day_url
-page = requests.get(spanish_day_url)
-spanish_soup = BeautifulSoup(page.content, parser)
-spanish_signs = spanish_soup.select("div.td-post-content h3")
-
-# We get love, work and health texts for spanish here
 for data in daily_data:
     sp_sign = signs_en_to_es[data['sign']]
-    for page_sign in spanish_signs:
-        if page_sign.text == sp_sign:
-            p_data = page_sign.parent.select('p')
-            data['contents']['health']['es'] = p_data[2].text.lstrip('Salud:').strip()
-            data['contents']['love']['es'] = p_data[3].text.lstrip('Amor:').strip()
-            data['contents']['work']['es'] = p_data[4].text.lstrip('Dinero y trabajo:').split('Ver más sobre')[
-                0].strip()
+    spanish_base_url = 'https://www.hola.com/horoscopo/' + delete_accents(sp_sign.lower())
+    page = requests.get(spanish_base_url, headers={'User-Agent': random_user_agent()})
+    spanish_soup = BeautifulSoup(page.content, parser)
+    ps = spanish_soup.select("div#resultados > *")
+    data['contents']['text']['es'] = ps[2].text
 
 print("Spanish data done")
 
 # ENGLISH
 print("English data in progress...")
 
-base = "https://www.prokerala.com"
-english_base_url = "https://www.prokerala.com/astrology/horoscope/"
-page = requests.get(english_base_url, headers={'User-Agent': random_user_agent()})
-english_soup = BeautifulSoup(page.content, parser)
-page_signs = english_soup.select('h2.sample-prediction-sign > a')
+base = "https://www.astrology-zodiac-signs.com/horoscope/"
+
 for data in daily_data:
-    for page_sign in page_signs:
-        if page_sign.text == data['sign']:
-            url = base + page_sign.get('href')
-            headless = chrome()
-            headless.get(url)
-            english_soup = BeautifulSoup(headless.page_source, parser)
-            headless.quit()
-            panels = english_soup.select('div.horoscope-panel')
-            data['contents']['health']['en'] = panels[1].text.replace('\n', '').strip()
-            data['contents']['love']['en'] = panels[2].text.replace('\n', '').replace(
-                'Understand compatibility with  love horoscope', '').replace(
-                'Check love percentage using love calculator.', '').strip()
-            data['contents']['work']['en'] = panels[3].text.replace('\n', '').strip()
+    page = requests.get(base + data['sign'].lower() + '/daily/', headers={'User-Agent': random_user_agent()})
+    english_soup = BeautifulSoup(page.content, parser)
+    ps = english_soup.select('div.dailyHoroscope > *')
+    data['contents']['text']['en'] = ps[2].text + '\n' + ps[3].text
 
 print("English data done")
 

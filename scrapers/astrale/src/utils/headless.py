@@ -1,7 +1,8 @@
 from fake_useragent import UserAgent
 from selenium import webdriver
-from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+
 
 def firefox():
     options = webdriver.FirefoxOptions()
@@ -17,7 +18,9 @@ def chrome():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("window-size=1400,2100")
     chrome_options.add_argument('--disable-gpu')
-    return webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options, )
+    chrome_options.add_argument("--log-level=3")
+    return webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options,
+                            service_log_path='NUL')
 
 
 def random_user_agent():
