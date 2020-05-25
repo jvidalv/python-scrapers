@@ -8,7 +8,7 @@ from src.constants.signs import *
 from src.keys.db_mongo import mongo_connection
 from src.utils.Mongo import Mongo
 from src.utils.headless import *
-from ssrc.utils.unicode import delete_accents
+from src.utils.unicode import delete_accents
 
 # CONNECTION
 mongo = Mongo(mongo_connection)

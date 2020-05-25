@@ -27,6 +27,11 @@ for sign in signs_en:
         'sign': sign,
         'contents': {
             'focus': '',
+            'percents': {
+                'love': random.randrange(30, 100),
+                'work': random.randrange(30, 100),
+                'health': random.randrange(30, 100)
+            },
             'love':
                 {'es': '', 'en': ''},
             'health':
@@ -51,15 +56,15 @@ for data in daily_data:
         data['contents']['numbers'].append(
             random_number
         )
-    # LOVE
+    # COMPATIBILITY
     while len(data['contents']['compatibility']) < 2:
         random_sign = signs_en[random.randrange(0, len(signs_en) - 1)]
         if random_sign not in data['contents']['compatibility']:
             data['contents']['compatibility'].append(random_sign)
-    # HATE
+    # FOCUSES
     data['contents']['focus'] = focuses[random.randrange(0, len(focuses) - 1)]
 
-print("Numbers, compatibility and foucs done")
+print("Numbers, compatibility and focus done")
 
 # SPANISH
 # Get the latest blog entry for this blog ( 1 each day )
