@@ -1,4 +1,5 @@
 import random
+import re
 from pprint import pprint
 
 import requests
@@ -81,16 +82,17 @@ for data in stale_data:
     compatibility_ps = soup.select('article.center-block > p')
 
     try:
-        data['resume']['es'] = compatibility_ps[0].text
-        data['relationship']['es'] = compatibility_ps[2].text
+        data['resume']['es'] = re.sub(' +', ' ', compatibility_ps[0].text)
+        data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[2].text)
     except IndexError:
         pprint(url_with_sign)
         page = requests.get(url_with_sign, headers={'User-Agent': random_user_agent()})
         soup = BeautifulSoup(page.content, parser)
         compatibility_ps = soup.select('article.center-block > p')
-        data['resume']['es'] = compatibility_ps[0].text
-        data['relationship']['es'] = compatibility_ps[2].text
+        data['resume']['es'] = re.sub(' +', ' ', compatibility_ps[0].text)
+        data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[2].text)
 
 mongo.db.stale.insert_many(stale_data)
 
 exit(0)
+
