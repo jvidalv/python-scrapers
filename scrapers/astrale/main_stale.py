@@ -55,15 +55,15 @@ for data in stale_data:
     soup = BeautifulSoup(page.content, parser)
     compatibility_ps = soup.select('div.entry-content > p')
     try:
-        data['resume']['en'] = compatibility_ps[0].text
-        data['relationship']['en'] = compatibility_ps[1].text
+        data['resume']['en'] = compatibility_ps[0].text.lstrip()
+        data['relationship']['en'] = compatibility_ps[1].text.lstrip()
     except IndexError:
         pprint(url_with_sign)
         page = requests.get(url_with_sign, headers={'User-Agent': random_user_agent()})
         soup = BeautifulSoup(page.content, parser)
         compatibility_ps = soup.select('div.entry-content > p')
-        data['resume']['en'] = compatibility_ps[0].text
-        data['relationship']['en'] = compatibility_ps[1].text
+        data['resume']['en'] = compatibility_ps[0].text.lstrip()
+        data['relationship']['en'] = compatibility_ps[1].text.lstrip()
 
 # SPANISH
 for data in stale_data:
@@ -74,23 +74,31 @@ for data in stale_data:
     page = requests.get(url_with_sign, headers={'User-Agent': random_user_agent()})
 
     if page.ok == 0:
-        url_base = "https://www.euroresidentes.com/horoscopos/compatibilidad/" + sign2 + "/" + sign2
-        url_with_sign = url_base + '-' + sign1 + '.htm'
+        url_base = "https://www.euroresidentes.com/horoscopos/compatibilidad/" + sign1 + "/" + sign1
+        url_with_sign = url_base + '-' + sign2 + '.htm'
         page = requests.get(url_with_sign, headers={'User-Agent': random_user_agent()})
 
     soup = BeautifulSoup(page.content, parser)
     compatibility_ps = soup.select('article.center-block > p')
 
-    try:
-        data['resume']['es'] = re.sub(' +', ' ', compatibility_ps[0].text)
-        data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[2].text)
-    except IndexError:
-        pprint(url_with_sign)
+    if not compatibility_ps:
+        url_base = "https://www.euroresidentes.com/horoscopos/compatibilidad/" + sign2 + "/" + sign2
+        url_with_sign = url_base + '-' + sign1 + '.htm'
         page = requests.get(url_with_sign, headers={'User-Agent': random_user_agent()})
         soup = BeautifulSoup(page.content, parser)
         compatibility_ps = soup.select('article.center-block > p')
-        data['resume']['es'] = re.sub(' +', ' ', compatibility_ps[0].text)
-        data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[2].text)
+
+    try:
+        data['resume']['es'] = re.sub(' +', ' ', compatibility_ps[0].text.lstrip())
+        data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[2].text.lstrip())
+        if not data['relationship']['es']:
+            data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[1].text.lstrip())
+    except IndexError:
+        page = requests.get(url_with_sign, headers={'User-Agent': random_user_agent()})
+        soup = BeautifulSoup(page.content, parser)
+        compatibility_ps = soup.select('article.center-block > p')
+        data['resume']['es'] = re.sub(' +', ' ', compatibility_ps[0].text.lstrip())
+        data['relationship']['es'] = re.sub(' +', ' ', compatibility_ps[2].text.lstrip())
 
 mongo.db.stale.insert_many(stale_data)
 
