@@ -4,7 +4,7 @@ request==2019.4.13
 pymongo==3.10.1
 selenium==3.141.0
 wheel==0.34.2
-lxml==4.5.0
+lxml==4.9.1
 webdriver-manager==2.5.2
 fake-useragent==0.1.11
 requests==2.23.0
